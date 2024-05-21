@@ -1,0 +1,41 @@
+body {
+    font-family: Arial;
+}
+
+.add-new-image {
+    border: 1px dashed;
+    display: block;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    padding: 25px;
+}
+
+.add-new-image>h2 {
+    text-align: center;
+}
+
+.add-new-image>form * {
+    font-size: 16px;
+}
+
+.add-new-image>form>input[type=file] {
+    font-size: 16px;
+    display: block;
+}
+
+.add-new-image>form>button {
+    margin-top: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-items: center;
+    padding: 50px;
+}
+
+.grid-item {
+    padding: 20px;
+}
