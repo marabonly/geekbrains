@@ -1,0 +1,78 @@
+body {
+    font-family: Arial;
+}
+
+.menu {
+    text-align: right;
+    padding: 50px 250px 0 0;
+}
+
+.menu>a>img {
+    width: 50px;
+    margin: 0 0 0 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.add-new-image {
+    border: 1px dashed;
+    display: block;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    padding: 25px;
+}
+
+.add-new-image>h2 {
+    text-align: center;
+}
+
+.add-new-image>form * {
+    font-size: 16px;
+}
+
+.add-new-image>form>input[type=file] {
+    font-size: 16px;
+    display: block;
+}
+
+.add-new-image>form>button {
+    margin-top: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-items: center;
+    padding: 0 50px 50px 50px;
+}
+
+.grid-item {
+    padding: 20px;
+}
+
+.grid-item>button {
+    font-size: 16px;
+}
+
+.grid-item>img {
+    width: 300px;
+    display: block;
+}
+
+.centered {
+    text-align: center;
+}
+
+.centered label {
+    display: inline-block;
+    width: 70px;
+    text-align: left;
+}
+
+.new-line {
+    margin-bottom: 10px;
+}
