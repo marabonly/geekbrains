@@ -31,6 +31,7 @@ if (!isset($_SESSION["goods"])) {
 
     <?php
     removeGoodFromBasket();
+    placeOrder($connect);
     ?>
 
     <div class="grid-container">
@@ -44,6 +45,7 @@ if (!isset($_SESSION["goods"])) {
                 echo '<div class="grid-item">';
                 echo '<img src="/images/' . $row['filename'] . '">';
                 echo '<form method="POST">';
+                echo '<input type="hidden" name="remove-item-form" value="">';
                 echo '<input type="hidden" name="id" value="' . $row['id'] . '">';
                 echo '<button>Удалить из корзины</button>';
                 echo '</form>';
@@ -52,6 +54,27 @@ if (!isset($_SESSION["goods"])) {
         }
         ?>
     </div>
+
+    <?php if ((isset($_SESSION["goods"])) && (count($_SESSION["goods"]) > 0)) : ?>
+
+        <?php if (!isset($_SESSION["user_id"])) : ?>
+
+            <div class="centered">
+                <p>Чтобы оформить заказ, выполните <a href="account.php">вход в аккаунт</a></p>
+            </div>
+
+        <?php else : ?>
+
+            <div class="centered">
+                <form method="POST">
+                    <input type="hidden" name="place-order-form" value="">
+                    <input type="submit" value="Оформить заказ" style="font-size: 36px; width: 400px; height: 100px;">
+                </form>
+            </div>
+
+        <?php endif; ?>
+
+    <?php endif; ?>
 
 </body>
 

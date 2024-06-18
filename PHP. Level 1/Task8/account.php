@@ -30,6 +30,7 @@ if (!isset($_SESSION["goods"])) {
     <h1>Вход в аккаунт</h1>
 
     <?php
+    register($connect);
     login($connect);
     logout($connect);
     ?>
@@ -46,6 +47,33 @@ if (!isset($_SESSION["goods"])) {
                     <input type="submit" value="Выйти">
                 </div>
             </form>
+
+            <div class="centered">
+                <?php printOrders($connect); ?>
+            </div>
+
+        <?php elseif ((isset($_GET["mode"])) && ($_GET["mode"] == "register")) : ?>
+
+            <form method="POST">
+                <input type="hidden" name="register-form" value="">
+                <div class="new-line">
+                    <label for="login">Логин</label>
+                    <input id="login" name="login" required>
+                </div>
+                <div class="new-line">
+                    <label for="password">Пароль</label>
+                    <input id="password" type="password" name="password" required>
+                </div>
+                <div class="new-line">
+                    <label for="password2">Повторите пароль</label>
+                    <input id="password2" type="password" name="password2" required>
+                </div>
+                <div class="new-line">
+                    <input type="submit" value="Зарегистрироваться">
+                </div>
+            </form>
+
+            <p>Если вы уже зарегистрированы, выполните <a href="account.php">вход в аккаунт</a></p>
 
         <?php else : ?>
 
@@ -64,7 +92,7 @@ if (!isset($_SESSION["goods"])) {
                 </div>
             </form>
 
-            <p>Если вы не зарегистрированы, пройдите <a href="register.php">регистрацию</a></p>
+            <p>Если вы не зарегистрированы, пройдите <a href="account.php?mode=register">регистрацию</a></p>
 
         <?php endif; ?>
 

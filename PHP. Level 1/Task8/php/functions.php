@@ -48,7 +48,7 @@ function getGoodsFromBasket($connect)
 
 function removeGoodFromBasket()
 {
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (($_SERVER["REQUEST_METHOD"] == "POST") && (isset($_POST["remove-item-form"]))) {
         $id = $_POST["id"];
 
         if (in_array($id, $_SESSION["goods"])) {
@@ -57,9 +57,99 @@ function removeGoodFromBasket()
     }
 }
 
+function placeOrder($connect)
+{
+    if (($_SERVER["REQUEST_METHOD"] == "POST") && (isset($_POST["place-order-form"]))) {
+        $items = implode(" ", $_SESSION["goods"]);
+
+        if ($items == "") {
+            return;
+        }
+
+        $sql = "INSERT INTO `order` (user_id, items) VALUES ('" . $_SESSION["user_id"] . "', '" . $items . "')";
+
+        $result = mysqli_query($connect, $sql);
+
+        if ($result == false) {
+            echo 'Ошибка размещения заказа';
+            return;
+        }
+
+        $_SESSION["goods"] = [];
+    }
+}
+
+function printOrders($connect)
+{
+    if ((isset($_SESSION["user_id"])) && (isset($_SESSION["is_admin"]))) {
+        if ($_SESSION["is_admin"] == true) {
+
+            $sql = "SELECT `order`.id, login, items FROM `order` LEFT JOIN user ON `order`.user_id = user.id";
+
+            if (!($result = mysqli_query($connect, $sql))) {
+                outputMessage("An error ocurred when getting orders from the database");
+                return;
+            }
+
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo 'Order No. ' . $row['id'] . ' by ' . $row['login'] . ' for items ' . $row['items'] . '<br>';
+            }
+        } else {
+            $sql = "SELECT id, items FROM `order` WHERE user_id = " . $_SESSION["user_id"];
+
+            if (!($result = mysqli_query($connect, $sql))) {
+                outputMessage("An error ocurred when getting orders from the database");
+                return;
+            }
+
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo 'Order No. ' . $row['id'] . ' for items ' . $row['items'] . '<br>';
+            }
+        }
+    }
+}
+
 function outputMessage($message)
 {
     echo $message . "<br>";
+}
+
+function register($connect)
+{
+    if (($_SERVER["REQUEST_METHOD"] == "POST") && (isset($_POST["register-form"]))) {
+        $login = htmlspecialchars($_POST["login"]);
+        $password = htmlspecialchars($_POST["password"]);
+        $password2 = htmlspecialchars($_POST["password2"]);
+
+        if ($password != $password2) {
+            echo 'Пароли не совпадают';
+            return;
+        }
+
+        $password = md5($password);
+
+        $sql = "SELECT id FROM user WHERE login = '" . $login . "'";
+
+        $result = mysqli_query($connect, $sql);
+
+        if (mysqli_affected_rows($connect) > 0) {
+            echo 'Введённый логин уже зарегистрирован';
+            return;
+        }
+
+        $sql = "INSERT INTO user (login, password, is_admin) VALUES ('" . $login . "', '" . $password . "', 0)";
+
+        $result = mysqli_query($connect, $sql);
+
+        if ($result == false) {
+            echo 'Ошибка регистрации пользователя';
+            return;
+        }
+
+        $_SESSION["user_id"] = mysqli_insert_id($connect);
+        $_SESSION["user_login"] = $login;
+        $_SESSION["is_admin"] = 0;
+    }
 }
 
 function login($connect)
